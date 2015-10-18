@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class Controller : MonoBehaviour {
+public class Controller : MonoBehaviour
+{
     public BallMovement ball;
     public GraceManager grace;
     public NodeSelector nodeSystem;
@@ -18,7 +18,7 @@ public class Controller : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-	    if(Input.GetKeyUp(KeyCode.Space)&&!grace.isGraced())
+	    if(Input.GetKeyDown(KeyCode.Z)&&!grace.isGraced())
         {
             distance = Vector3.Distance(ball.gameObject.transform.position, 
                 nodeSystem.currentNode.transform.position);
@@ -31,6 +31,8 @@ public class Controller : MonoBehaviour {
         }
 	}
 
+
+
     public void checkHasPressed()
     {
         Debug.Log("checking...");
@@ -42,6 +44,9 @@ public class Controller : MonoBehaviour {
         {
             grace.grace();
         }
-
+        if (grace.graceCountdown <= 0) grace.endGrace();
     }
+
+   
+
 }

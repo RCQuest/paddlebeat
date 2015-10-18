@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class Tuple<T1, T2>
 {
@@ -28,9 +29,11 @@ public class NodeSelector : MonoBehaviour {
     public int currentStep;
     public BallMovement movement;
     public Controller controller;
+    public TextMesh countdown;
+    public GraceManager grace;
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start ()
     {
 		sequence = new List<Tuple<MoveType, int>>(){
 			new Tuple<MoveType, int>(MoveType.DEFAULT,0),
@@ -47,7 +50,6 @@ public class NodeSelector : MonoBehaviour {
         {
             currentStep = sequence[currentNodeStep].Second;
             currentNode = nodes[currentStep];
-            controller.checkHasPressed();
         }
 		if(timer > CURRENT_SPEED)
 		{
@@ -62,4 +64,13 @@ public class NodeSelector : MonoBehaviour {
                 nodes[sequence[currentNodeStep].Second].transform.position)/CURRENT_SPEED;
 		}
 	}
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        //Debug.Log("gotcha");
+        if(grace.isGraced()) grace.graceCountdown--;
+        countdown.text = grace.graceCountdown.ToString();
+        Debug.Log(grace.graceCountdown);
+        if (other.CompareTag("Respawn")) controller.checkHasPressed();
+    }
 }
