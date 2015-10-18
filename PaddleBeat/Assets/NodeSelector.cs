@@ -70,7 +70,7 @@ public class NodeSelector : MonoBehaviour {
         //Debug.Log("gotcha");
         if(grace.isGraced()) grace.graceCountdown--;
         countdown.text = grace.graceCountdown.ToString();
-        Debug.Log(grace.graceCountdown);
+        //Debug.Log(grace.graceCountdown);
         if (other.CompareTag("Respawn")) controller.checkHasPressed();
     }
 }

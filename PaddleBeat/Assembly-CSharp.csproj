@@ -45,8 +45,10 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\AudioProcessor.cs" />
      <Compile Include="Assets\BallMovement.cs" />
      <Compile Include="Assets\Controller.cs" />
+     <Compile Include="Assets\Example.cs" />
      <Compile Include="Assets\GraceManager.cs" />
      <Compile Include="Assets\NodeSelector.cs" />
  <Reference Include="UnityEngine.UI">

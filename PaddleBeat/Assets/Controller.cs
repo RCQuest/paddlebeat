@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Controller : MonoBehaviour
+public class Controller : MonoBehaviour, AudioProcessor.AudioCallbacks
 {
     public BallMovement ball;
     public GraceManager grace;
@@ -8,12 +8,15 @@ public class Controller : MonoBehaviour
     public float distance;
     public float maxDistance;
     public bool playerHasHitThisStep=false;
+    public AudioProcessor processor;
 
 
     // Use this for initialization
     void Start ()
     {
-	}
+        processor = FindObjectOfType<AudioProcessor>();
+        processor.addAudioCallback(this);
+    }
 	
 	// Update is called once per frame
 	void Update ()
@@ -31,11 +34,32 @@ public class Controller : MonoBehaviour
         }
 	}
 
+    //this event will be called every time a beat is detected.
+    //Change the threshold parameter in the inspector
+    //to adjust the sensitivity
+    public void onOnbeatDetected()
+    {
+        Debug.Log("Beat!!!");
+    }
 
+    //This event will be called every frame while music is playing
+    public void onSpectrum(float[] spectrum)
+    {
+        //The spectrum is logarithmically averaged
+        //to 12 bands
+
+        for (int i = 0; i < spectrum.Length; ++i)
+        {
+            Vector3 start = new Vector3(i, 0, 0);
+            Vector3 end = new Vector3(i, spectrum[i], 0);
+            Debug.DrawLine(start, end);
+        }
+    }
 
     public void checkHasPressed()
     {
-        Debug.Log("checking...");
+        //Debug.Log("checking...");
+        processor.tapTempo();
         if(playerHasHitThisStep)
         {
             playerHasHitThisStep = false;
