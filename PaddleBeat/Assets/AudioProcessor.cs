@@ -91,7 +91,7 @@ public class AudioProcessor : MonoBehaviour
         lastT = getCurrentTimeMillis();
     }
 
-    public void tapTempo()
+    public int tapTempo()
     {
         nowT = getCurrentTimeMillis();
         diff = nowT - lastT;
@@ -101,7 +101,7 @@ public class AudioProcessor : MonoBehaviour
 
         int average = (int)(sum / entries);
 
-        Debug.Log("average = " + average);
+        return average;
     }
 
     double[] toDoubleArray(float[] arr)

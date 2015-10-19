@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using System;
 
 public class Tuple<T1, T2>
 {
@@ -20,7 +21,7 @@ public enum MoveType{
 
 public class NodeSelector : MonoBehaviour {
 
-	public float CURRENT_SPEED;
+	public float secondsPerBeat;
 	public float timer;
 	public List<GameObject> nodes;
 	public List<Tuple<MoveType, int>> sequence;
@@ -31,6 +32,7 @@ public class NodeSelector : MonoBehaviour {
     public Controller controller;
     public TextMesh countdown;
     public GraceManager grace;
+    public bool begun = true;
 
     // Use this for initialization
     void Start ()
@@ -45,25 +47,38 @@ public class NodeSelector : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		timer=timer+Time.deltaTime;
-        if (timer > CURRENT_SPEED / 2 && currentNode!= movement.nodeNext)
+        if (begun)
         {
-            currentStep = sequence[currentNodeStep].Second;
-            currentNode = nodes[currentStep];
+            timer = timer + Time.deltaTime;
+            if (timer > secondsPerBeat / 2 && currentNode != movement.nodeNext)
+            {
+                currentStep = sequence[currentNodeStep].Second;
+                currentNode = nodes[currentStep];
+            }
+            if (timer > secondsPerBeat)
+            {
+                Vector3 lastNodePosition =
+                    nodes[sequence[currentNodeStep].Second].transform.position;
+                timer = 0;
+                currentNodeStep++;
+                if (currentNodeStep == sequence.Count)
+                    currentNodeStep = 0;
+                movement.nodeNext = nodes[sequence[currentNodeStep].Second];
+                movement.speed = Vector3.Distance(lastNodePosition,
+                    nodes[sequence[currentNodeStep].Second].transform.position) / secondsPerBeat;
+            }
         }
-		if(timer > CURRENT_SPEED)
-		{
-			Vector3 lastNodePosition = 
-                nodes[sequence[currentNodeStep].Second].transform.position;
-			timer=0;
-			currentNodeStep++;
-			if(currentNodeStep==sequence.Count)
-				currentNodeStep=0;
-			movement.nodeNext=nodes[sequence[currentNodeStep].Second];
-			movement.speed=Vector3.Distance(lastNodePosition, 
-                nodes[sequence[currentNodeStep].Second].transform.position)/CURRENT_SPEED;
-		}
 	}
+
+    public void setTempo(float BPM)
+    {
+        secondsPerBeat =  60/ BPM;
+    }
+
+    public void begin()
+    {
+        begun = true;
+    }
 
     void OnTriggerExit2D(Collider2D other)
     {

@@ -1,6 +1,12 @@
 ﻿using UnityEngine;
 
-public class Controller : MonoBehaviour, AudioProcessor.AudioCallbacks
+public class SongInfo
+{
+    public float secondsTillFirstBeat;
+    public float BPM;
+}
+
+public class Controller : MonoBehaviour //, AudioProcessor.AudioCallbacks
 {
     public BallMovement ball;
     public GraceManager grace;
@@ -8,14 +14,23 @@ public class Controller : MonoBehaviour, AudioProcessor.AudioCallbacks
     public float distance;
     public float maxDistance;
     public bool playerHasHitThisStep=false;
-    public AudioProcessor processor;
+    public SongInfo currentSong;
+    //public AudioProcessor processor;
+    //public int beatsDetected;
+    //private int windUpPeriod = 8;
 
 
     // Use this for initialization
     void Start ()
     {
-        processor = FindObjectOfType<AudioProcessor>();
-        processor.addAudioCallback(this);
+        currentSong = new SongInfo();
+        currentSong.BPM = 125;
+        currentSong.secondsTillFirstBeat = 0.0f;
+        nodeSystem.setTempo(currentSong.BPM);
+        nodeSystem.begin();
+
+        //processor = FindObjectOfType<AudioProcessor>();
+        //processor.addAudioCallback(this);
     }
 	
 	// Update is called once per frame
@@ -34,32 +49,40 @@ public class Controller : MonoBehaviour, AudioProcessor.AudioCallbacks
         }
 	}
 
-    //this event will be called every time a beat is detected.
-    //Change the threshold parameter in the inspector
-    //to adjust the sensitivity
-    public void onOnbeatDetected()
-    {
-        Debug.Log("Beat!!!");
-    }
+    ////this event will be called every time a beat is detected.
+    ////Change the threshold parameter in the inspector
+    ////to adjust the sensitivity
+    //public void onOnbeatDetected()
+    //{
 
-    //This event will be called every frame while music is playing
-    public void onSpectrum(float[] spectrum)
-    {
-        //The spectrum is logarithmically averaged
-        //to 12 bands
+    //    if(beatsDetected <= windUpPeriod+1) beatsDetected++;
+    //    if (beatsDetected <= windUpPeriod) nodeSystem.tempo = processor.tapTempo();
+    //    if (beatsDetected == windUpPeriod)
+    //    {
+    //        Debug.Log("set!!!");
+    //        nodeSystem.setTempo();
+    //        nodeSystem.begin();
+    //    }
+    //    Debug.Log("Beat!!!");
+    //}
 
-        for (int i = 0; i < spectrum.Length; ++i)
-        {
-            Vector3 start = new Vector3(i, 0, 0);
-            Vector3 end = new Vector3(i, spectrum[i], 0);
-            Debug.DrawLine(start, end);
-        }
-    }
+    ////This event will be called every frame while music is playing
+    //public void onSpectrum(float[] spectrum)
+    //{
+    //    //The spectrum is logarithmically averaged
+    //    //to 12 bands
+
+    //    for (int i = 0; i < spectrum.Length; ++i)
+    //    {
+    //        Vector3 start = new Vector3(i, 0, 0);
+    //        Vector3 end = new Vector3(i, spectrum[i], 0);
+    //        Debug.DrawLine(start, end);
+    //    }
+    //}
 
     public void checkHasPressed()
     {
         //Debug.Log("checking...");
-        processor.tapTempo();
         if(playerHasHitThisStep)
         {
             playerHasHitThisStep = false;
