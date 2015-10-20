@@ -15,6 +15,7 @@ public class Controller : MonoBehaviour //, AudioProcessor.AudioCallbacks
     public float maxDistance;
     public bool playerHasHitThisStep=false;
     public SongInfo currentSong;
+    public AudioManager audioManager;
     //public AudioProcessor processor;
     //public int beatsDetected;
     //private int windUpPeriod = 8;
@@ -24,10 +25,14 @@ public class Controller : MonoBehaviour //, AudioProcessor.AudioCallbacks
     void Start ()
     {
         currentSong = new SongInfo();
-        currentSong.BPM = 125;
+        currentSong.BPM = 130;
         currentSong.secondsTillFirstBeat = 0.0f;
         nodeSystem.setTempo(currentSong.BPM);
+        audioManager.tempo = currentSong.BPM;
+        audioManager.setSamplesPerBeat();
         nodeSystem.begin();
+        audioManager.startTrack();
+
 
         //processor = FindObjectOfType<AudioProcessor>();
         //processor.addAudioCallback(this);

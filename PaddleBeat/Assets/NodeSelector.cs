@@ -33,6 +33,7 @@ public class NodeSelector : MonoBehaviour {
     public TextMesh countdown;
     public GraceManager grace;
     public bool begun = true;
+    public AudioManager audioManager;
 
     // Use this for initialization
     void Start ()
@@ -49,6 +50,7 @@ public class NodeSelector : MonoBehaviour {
 	void Update () {
         if (begun)
         {
+            audioManager.getCurrentBeatPosition();
             timer = timer + Time.deltaTime;
             if (timer > secondsPerBeat / 2 && currentNode != movement.nodeNext)
             {
