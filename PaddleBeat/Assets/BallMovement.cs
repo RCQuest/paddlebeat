@@ -10,4 +10,10 @@ public class BallMovement : MonoBehaviour
 		float step = speed * Time.deltaTime;
 		transform.position = Vector3.MoveTowards(transform.position, nodeNext.transform.position, step);
 	}
+
+    public void setBallPosition(Vector3 pos)
+    {
+        transform.position = pos;
+
+    }
 }

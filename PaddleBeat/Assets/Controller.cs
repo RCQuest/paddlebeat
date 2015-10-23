@@ -45,7 +45,7 @@ public class Controller : MonoBehaviour //, AudioProcessor.AudioCallbacks
         {
             distance = Vector3.Distance(ball.gameObject.transform.position, 
                 nodeSystem.currentNode.transform.position);
-            Debug.Log(distance);
+            //Debug.Log(distance);
             playerHasHitThisStep = true;
             if(distance>maxDistance)
             {

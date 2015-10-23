@@ -7,15 +7,19 @@ public class AudioManager : MonoBehaviour
     public float tempo;
     public float samplesPerBeat;
 
-    void Start()
+    public float debugLevel=0.1f;
+
+    void Update()
     {
+        float beat = getCurrentBeatPosition();
+        if (beat < debugLevel) Debug.Log(beat);
     }
 
     public void setSamplesPerBeat()
     {
         samplesPerBeat = (tempo / 60f) / gameObject.GetComponent<AudioSource>().clip.frequency;
     }
-
+    
     public void startTrack()
     {
         gameObject.GetComponent<AudioSource>().Play();
@@ -23,7 +27,7 @@ public class AudioManager : MonoBehaviour
 
     public float getCurrentBeatPosition()
     {
-        Debug.Log((gameObject.GetComponent<AudioSource>().timeSamples % samplesPerBeat) / samplesPerBeat);
+        //Debug.Log((gameObject.GetComponent<AudioSource>().timeSamples % samplesPerBeat) / samplesPerBeat);
         return (gameObject.GetComponent<AudioSource>().timeSamples%samplesPerBeat)/ samplesPerBeat;
     }
 }

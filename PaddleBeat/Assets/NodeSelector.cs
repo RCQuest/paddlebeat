@@ -50,12 +50,14 @@ public class NodeSelector : MonoBehaviour {
 	void Update () {
         if (begun)
         {
-            audioManager.getCurrentBeatPosition();
+
             timer = timer + Time.deltaTime;
             if (timer > secondsPerBeat / 2 && currentNode != movement.nodeNext)
             {
+                
                 currentStep = sequence[currentNodeStep].Second;
                 currentNode = nodes[currentStep];
+                realign();
             }
             if (timer > secondsPerBeat)
             {
@@ -68,9 +70,17 @@ public class NodeSelector : MonoBehaviour {
                 movement.nodeNext = nodes[sequence[currentNodeStep].Second];
                 movement.speed = Vector3.Distance(lastNodePosition,
                     nodes[sequence[currentNodeStep].Second].transform.position) / secondsPerBeat;
+                
+
             }
         }
 	}
+
+    private void realign()
+    {
+        timer = secondsPerBeat*audioManager.getCurrentBeatPosition();
+        //Debug.Log(timer);
+    }
 
     public void setTempo(float BPM)
     {
