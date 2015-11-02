@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Rhythmify;
+using UnityEngine;
 
 public class SongInfo
 {
@@ -8,34 +9,19 @@ public class SongInfo
 
 public class Controller : MonoBehaviour //, AudioProcessor.AudioCallbacks
 {
-    public BallMovement ball;
+    public MoveToPositions ball;
     public GraceManager grace;
-    public NodeSelector nodeSystem;
     public float distance;
     public float maxDistance;
     public bool playerHasHitThisStep=false;
-    public SongInfo currentSong;
-    public AudioManager audioManager;
-    //public AudioProcessor processor;
-    //public int beatsDetected;
-    //private int windUpPeriod = 8;
+    public NodeSelector nodeSystem;
+    public MoveToPositions movement;
 
 
     // Use this for initialization
     void Start ()
     {
-        currentSong = new SongInfo();
-        currentSong.BPM = 130;
-        currentSong.secondsTillFirstBeat = 0.0f;
-        nodeSystem.setTempo(currentSong.BPM);
-        audioManager.tempo = currentSong.BPM;
-        audioManager.setSamplesPerBeat();
-        nodeSystem.begin();
-        audioManager.startTrack();
-
-
-        //processor = FindObjectOfType<AudioProcessor>();
-        //processor.addAudioCallback(this);
+        
     }
 	
 	// Update is called once per frame
@@ -44,11 +30,12 @@ public class Controller : MonoBehaviour //, AudioProcessor.AudioCallbacks
 	    if(Input.GetKeyDown(KeyCode.Z)&&!grace.isGraced())
         {
             distance = Vector3.Distance(ball.gameObject.transform.position, 
-                nodeSystem.currentNode.transform.position);
-            //Debug.Log(distance);
+                movement.positions[(nodeSystem.currentStep+1) % movement.positions.Length]);
+            Debug.Log(distance);
             playerHasHitThisStep = true;
             if(distance>maxDistance)
             {
+                Debug.Log("ooops!");
                 grace.grace();
             }
         }
@@ -98,7 +85,4 @@ public class Controller : MonoBehaviour //, AudioProcessor.AudioCallbacks
         }
         if (grace.graceCountdown <= 0) grace.endGrace();
     }
-
-   
-
 }
