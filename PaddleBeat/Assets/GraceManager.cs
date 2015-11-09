@@ -31,18 +31,9 @@ public class GraceManager : MonoBehaviour
         return graced;
     }
 
-    //IEnumerator gracePeriod()
-    //{
-    //    graced = true;
-    //    startGrace();
-    //    yield return new WaitForSeconds(periodLength);
-    //    endGrace();
-    //    graced = false;
-    //}
-
     private void startGrace()
     {
-
+        tag = "Player";
         graced = true;
         //Debug.Log("grace started.");
         GetComponent<TrailRenderer>().material.color = deadColor;
@@ -50,6 +41,7 @@ public class GraceManager : MonoBehaviour
 
     public void endGrace()
     {
+        tag = "Ball";
         graceCountdown = graceCountdownLength;
         graced = false;
         GetComponent<TrailRenderer>().material.color = aliveColor;

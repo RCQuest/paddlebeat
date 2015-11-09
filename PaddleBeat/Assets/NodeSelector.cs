@@ -30,7 +30,6 @@ public class NodeSelector : MonoBehaviour {
     public int currentStep;
  //   public BallMovement movement;
     public Controller controller;
-    public TextMesh countdown;
     public GraceManager grace;
     public MoveToPositions ball;
  //   public bool begun = true;
@@ -39,7 +38,6 @@ public class NodeSelector : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-        currentStep = ball.idx;
 	}
 	
 	// Update is called once per frame
@@ -48,21 +46,7 @@ public class NodeSelector : MonoBehaviour {
 	}
     
 
-    void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.CompareTag("Respawn"))
-        {
-            if (grace.isGraced()) grace.graceCountdown--;
-            countdown.text = grace.graceCountdown.ToString();
-            controller.checkHasPressed();
-        }
-    }
+    
 
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("Respawn"))
-        {
-            currentStep=ball.idx;
-        }
-    }
+    
 }

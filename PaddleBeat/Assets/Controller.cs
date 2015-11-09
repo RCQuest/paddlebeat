@@ -1,5 +1,7 @@
 ﻿using Rhythmify;
+using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class SongInfo
 {
@@ -13,75 +15,150 @@ public class Controller : MonoBehaviour //, AudioProcessor.AudioCallbacks
     public GraceManager grace;
     public float distance;
     public float maxDistance;
-    public bool playerHasHitThisStep=false;
     public NodeSelector nodeSystem;
     public MoveToPositions movement;
+    public TextMesh countdown;
+    
+    public GameObject nodeL;
+    public GameObject nodeC;
+    public GameObject nodeR;
+
+    public GameObject paddleZ;
+    public GameObject paddleX;
+    public GameObject paddleC;
+
+    public Vector3 currentNode;
+    public GameObject currentNodeObject;
+    public Vector3 previousNode;
+
+    public bool playerHasHitThisStep;
+    public bool isOnEntry;
+    public bool playerTurn;
+
+    public float previousPrecision;
+    public float threshold;
 
 
     // Use this for initialization
     void Start ()
     {
-        
+        isOnEntry = false;
+        playerHasHitThisStep = false;
+        playerTurn = true;
+        previousPrecision = 0.0f;
+        currentNode = paddleX.transform.position;
+        currentNodeObject = paddleX;
+        previousNode = nodeC.transform.position;
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
-	    if(Input.GetKeyDown(KeyCode.Z)&&!grace.isGraced())
+        if (Input.GetKeyDown(KeyCode.X) && currentNodeObject == paddleX
+        || Input.GetKeyDown(KeyCode.Z) && currentNodeObject == paddleZ
+        || Input.GetKeyDown(KeyCode.C) && currentNodeObject == paddleC)
         {
-            distance = Vector3.Distance(ball.gameObject.transform.position, 
-                movement.positions[(nodeSystem.currentStep+1) % movement.positions.Length]);
-            Debug.Log(distance);
-            playerHasHitThisStep = true;
-            if(distance>maxDistance)
-            {
-                Debug.Log("ooops!");
-                grace.grace();
-            }
+            verifyPress();
         }
-	}
+        else if (Input.GetKeyDown(KeyCode.X)
+             || Input.GetKeyDown(KeyCode.Z)
+             || Input.GetKeyDown(KeyCode.C))
+            grace.grace();
+    }
 
-    ////this event will be called every time a beat is detected.
-    ////Change the threshold parameter in the inspector
-    ////to adjust the sensitivity
-    //public void onOnbeatDetected()
-    //{
+    private void verifyPress()
+    {
+        if (playerHasHitThisStep || !isOnEntry)
+        {
+            grace.grace();
+            previousPrecision = 0.0f;
+        }
+        if (!grace.isGraced() && isOnEntry && playerTurn)
+        {
+            distance = Vector3.Distance(ball.gameObject.transform.position, currentNode);
+            playerHasHitThisStep = true;
+            if (distance > maxDistance)
+            {
+                grace.grace();
+                previousPrecision = 0.0f;
+            }
+            else
+            {
+                previousPrecision = Mathf.Clamp01((distance / maxDistance)/threshold);
+            }
 
-    //    if(beatsDetected <= windUpPeriod+1) beatsDetected++;
-    //    if (beatsDetected <= windUpPeriod) nodeSystem.tempo = processor.tapTempo();
-    //    if (beatsDetected == windUpPeriod)
-    //    {
-    //        Debug.Log("set!!!");
-    //        nodeSystem.setTempo();
-    //        nodeSystem.begin();
-    //    }
-    //    Debug.Log("Beat!!!");
-    //}
+            //Debug.Log(previousPrecision);
+        }
+    }
 
-    ////This event will be called every frame while music is playing
-    //public void onSpectrum(float[] spectrum)
-    //{
-    //    //The spectrum is logarithmically averaged
-    //    //to 12 bands
+    public void requestNextNode()
+    {
+        isOnEntry = false;
+        if (grace.isGraced()) grace.graceCountdown--;
+        countdown.text = grace.graceCountdown.ToString();
 
-    //    for (int i = 0; i < spectrum.Length; ++i)
-    //    {
-    //        Vector3 start = new Vector3(i, 0, 0);
-    //        Vector3 end = new Vector3(i, spectrum[i], 0);
-    //        Debug.DrawLine(start, end);
-    //    }
-    //}
+        if (currentNodeObject.CompareTag("Paddle"))
+        {
+            playerTurn = false;
+            previousPrecision = 0.0f;
+        }
+        else playerTurn = true;
+
+        checkHasPressed();
+        
+        previousNode = currentNode;
+        float previousNodeObjectY = currentNodeObject.transform.position.y;
+        currentNodeObject = playerTurn ? getRandomPaddle() : getNextNode();
+        float y = currentNodeObject.transform.position.y
+                +(previousNodeObjectY - currentNodeObject.transform.position.y) 
+                * previousPrecision;
+        currentNode = new Vector3(currentNodeObject.transform.position.x,y,0.0f);
+    }
+
+    private GameObject getNextNode()
+    {
+        if (Input.GetKey(KeyCode.LeftArrow) && Input.GetKey(KeyCode.RightArrow))
+            return nodeC;
+        if (Input.GetKey(KeyCode.LeftArrow))
+            return nodeL;
+        if (Input.GetKey(KeyCode.RightArrow))
+            return nodeR;
+        return nodeC;
+    }
+
+    private GameObject getRandomPaddle()
+    {
+        float paddle = UnityEngine.Random.value;
+        if (paddle > .6f)
+            return paddleZ;
+        if (paddle > .3f)
+            return paddleC;
+        return paddleX;
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Paddle"))
+        {
+            isOnEntry = true;
+        }
+        else if (other.CompareTag("Node"))
+        {
+            playerHasHitThisStep = true;
+        }
+    }
 
     public void checkHasPressed()
     {
         //Debug.Log("checking...");
-        if(playerHasHitThisStep)
+        if (playerHasHitThisStep)
         {
             playerHasHitThisStep = false;
         }
-        else if(!grace.isGraced())
+        else if (!grace.isGraced())
         {
             grace.grace();
+            previousPrecision = 0.0f;
         }
         if (grace.graceCountdown <= 0) grace.endGrace();
     }

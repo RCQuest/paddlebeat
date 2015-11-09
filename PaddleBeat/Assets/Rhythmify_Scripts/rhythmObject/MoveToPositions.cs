@@ -22,6 +22,8 @@ namespace Rhythmify {
         public int idxA;
         public int idxB;
 
+        public Controller controller;
+
         override protected void init() {
             if (relative) {
                 if (local) {
@@ -44,24 +46,38 @@ namespace Rhythmify {
             }
         }
 
-        override protected void rhythmUpdate(int beat) {
-            int size = positions.Length;
-        
-            if (size <= 1) {
-                return;
-            }
-            
+        override protected void rhythmUpdate(int beat)
+        {
             idx = beat + offset;
-            if (indices.Length > 0) {
-                idxA = indices[idx % indices.Length];
-                idxB = indices[(idx + 1) % indices.Length];
-                StartCoroutine(move(positions [idxA % size], positions [idxB % size], secondsPerBeat));
-            }
-            else {
-                StartCoroutine(move(positions [idx % size], positions [(idx + 1) % size], secondsPerBeat));
-            }
+
+            controller.requestNextNode();
+
+            StartCoroutine(move(controller.previousNode, controller.currentNode, secondsPerBeat));
         }
-    
+
+        //override protected void rhythmUpdate(int beat)
+        //{
+        //    int size = positions.Length;
+
+        //    if (size <= 1)
+        //    {
+        //        return;
+        //    }
+
+        //    idx = beat + offset;
+        //    if (indices.Length > 0)
+        //    {
+        //        idxA = indices[idx % indices.Length];
+        //        idxB = indices[(idx + 1) % indices.Length];
+        //        StartCoroutine(move(positions[idxA % size], positions[idxB % size], secondsPerBeat));
+        //    }
+        //    else
+        //    {
+
+        //        StartCoroutine(move(positions[idx % size], positions[(idx + 1) % size], secondsPerBeat));
+        //    }
+        //}
+
         private IEnumerator move(Vector3 startPos, Vector3 endPos, float duration) {
             float startTime = Time.time;
             if (rigid && rigidBody != null) {
