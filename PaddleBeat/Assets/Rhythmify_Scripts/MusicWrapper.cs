@@ -11,6 +11,7 @@ namespace Rhythmify {
         public int BPM;
         public float loopLength;
         public float loopThreshold;
+        public int offset;
         private AudioSource audioSource;
         private AudioClip audioClip;
     
@@ -25,9 +26,11 @@ namespace Rhythmify {
         }
     
         public void Update() {
-            if (loopLength > 0 && loopThreshold > 0) {
-                if (audioSource.timeSamples > loopThreshold * audioClip.frequency) {
-                    audioSource.timeSamples -= Mathf.RoundToInt(loopLength * audioClip.frequency);
+            if (loopLength > 0 && loopThreshold > 0)
+            {
+                if (audioSource.timeSamples > loopThreshold * audioClip.frequency)
+                {
+                    audioSource.timeSamples -= (Mathf.RoundToInt(loopLength * audioClip.frequency));
                 }
             }
         }

@@ -35,7 +35,6 @@ public class Controller : MonoBehaviour //, AudioProcessor.AudioCallbacks
     public bool isOnEntry;
     public bool playerTurn;
 
-    public float previousPrecision;
     public float threshold;
 
 
@@ -45,7 +44,6 @@ public class Controller : MonoBehaviour //, AudioProcessor.AudioCallbacks
         isOnEntry = false;
         playerHasHitThisStep = false;
         playerTurn = true;
-        previousPrecision = 0.0f;
         currentNode = paddleX.transform.position;
         currentNodeObject = paddleX;
         previousNode = nodeC.transform.position;
@@ -68,10 +66,10 @@ public class Controller : MonoBehaviour //, AudioProcessor.AudioCallbacks
 
     private void verifyPress()
     {
+
         if (playerHasHitThisStep || !isOnEntry)
         {
             grace.grace();
-            previousPrecision = 0.0f;
         }
         if (!grace.isGraced() && isOnEntry && playerTurn)
         {
@@ -80,14 +78,9 @@ public class Controller : MonoBehaviour //, AudioProcessor.AudioCallbacks
             if (distance > maxDistance)
             {
                 grace.grace();
-                previousPrecision = 0.0f;
-            }
-            else
-            {
-                previousPrecision = Mathf.Clamp01((distance / maxDistance)/threshold);
             }
 
-            //Debug.Log(previousPrecision);
+            
         }
     }
 
@@ -100,19 +93,16 @@ public class Controller : MonoBehaviour //, AudioProcessor.AudioCallbacks
         if (currentNodeObject.CompareTag("Paddle"))
         {
             playerTurn = false;
-            previousPrecision = 0.0f;
         }
         else playerTurn = true;
 
         checkHasPressed();
         
         previousNode = currentNode;
-        float previousNodeObjectY = currentNodeObject.transform.position.y;
         currentNodeObject = playerTurn ? getRandomPaddle() : getNextNode();
-        float y = currentNodeObject.transform.position.y
-                +(previousNodeObjectY - currentNodeObject.transform.position.y) 
-                * previousPrecision;
-        currentNode = new Vector3(currentNodeObject.transform.position.x,y,0.0f);
+        currentNode = new Vector3(currentNodeObject.transform.position.x,
+                                  currentNodeObject.transform.position.y, 
+                                  0.0f);
     }
 
     private GameObject getNextNode()
@@ -158,7 +148,6 @@ public class Controller : MonoBehaviour //, AudioProcessor.AudioCallbacks
         else if (!grace.isGraced())
         {
             grace.grace();
-            previousPrecision = 0.0f;
         }
         if (grace.graceCountdown <= 0) grace.endGrace();
     }

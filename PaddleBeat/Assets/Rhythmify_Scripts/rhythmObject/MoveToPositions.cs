@@ -48,6 +48,7 @@ namespace Rhythmify {
 
         override protected void rhythmUpdate(int beat)
         {
+            Debug.Log("heartbeat");
             idx = beat + offset;
 
             controller.requestNextNode();

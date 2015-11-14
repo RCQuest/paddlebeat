@@ -15,6 +15,7 @@ namespace Rhythmify {
         private AudioClip audioClip;
         private int lastBeatUpdate = -1;
         private int beatCount = 0;
+        private int offset;
 
         public void Start() {
             GameObject[] bgmContainers = GameObject.FindGameObjectsWithTag("Rhythmify_Music");
@@ -37,11 +38,15 @@ namespace Rhythmify {
             secondsPerBeat = 60.0f / BPM;
             samplesPerBeat = secondsPerBeat * audioClip.frequency;
 
+            offset = bgmContainer.GetComponent<MusicWrapper>().offset;
+
             init();
         }
     
         public void Update() {
-            int beat = (int)(audioSource.timeSamples / samplesPerBeat);
+            int beat = (int)((audioSource.timeSamples + offset) / samplesPerBeat);
+
+            Debug.Log(audioSource.timeSamples);
         
             if (beat != lastBeatUpdate) {
                 lastBeatUpdate = beat;
