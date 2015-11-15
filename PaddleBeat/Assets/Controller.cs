@@ -52,10 +52,19 @@ public class Controller : MonoBehaviour //, AudioProcessor.AudioCallbacks
 	// Update is called once per frame
 	void Update ()
     {
-        if (Input.GetKeyDown(KeyCode.X) && currentNodeObject == paddleX
-        || Input.GetKeyDown(KeyCode.Z) && currentNodeObject == paddleZ
-        || Input.GetKeyDown(KeyCode.C) && currentNodeObject == paddleC)
+        if (Input.GetKeyDown(KeyCode.X) && currentNodeObject == paddleX)
         {
+            paddleX.GetComponent<CentrePaddleAnimation>().startAnimation();
+            verifyPress();
+        }
+        else if (Input.GetKeyDown(KeyCode.Z) && currentNodeObject == paddleZ)
+        {
+            paddleZ.GetComponent<SidePaddleAnimation>().startAnimation();
+            verifyPress();
+        }
+        else if (Input.GetKeyDown(KeyCode.C) && currentNodeObject == paddleC)
+        {
+            paddleC.GetComponent<SidePaddleAnimation>().startAnimation();
             verifyPress();
         }
         else if (Input.GetKeyDown(KeyCode.X)
