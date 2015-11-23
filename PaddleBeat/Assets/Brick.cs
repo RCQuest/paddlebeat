@@ -22,14 +22,33 @@ public class Brick : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Ball"))
-            brokenStage--;
+        {
+            degrade();
+        }
+            
+    }
+
+    public void degrade()
+    {
+        if(brokenStage > 0) brokenStage--;
         setBrokenSprite(brokenStage / maxHp);
+    }
+
+    public bool isBroken()
+    {
+        return brokenStage <= 0;
+    }
+
+    public void assertDestruction()
+    {
+        if(brokenStage <= 0)
+            Destroy(this.gameObject);
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("Ball") && brokenStage <= 0)
-            Destroy(this.gameObject);       
+        if (other.CompareTag("Ball"))
+            assertDestruction();
     }
 
     private void setBrokenSprite(float percentBroken)

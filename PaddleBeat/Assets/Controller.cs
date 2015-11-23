@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.UI;
 
 public class SongInfo
 {
@@ -17,7 +18,7 @@ public class Controller : MonoBehaviour //, AudioProcessor.AudioCallbacks
     public float maxDistance;
     public NodeSelector nodeSystem;
     public MoveToPositions movement;
-    public TextMesh countdown;
+    public Text countdown;
     
     public GameObject nodeL;
     public GameObject nodeC;

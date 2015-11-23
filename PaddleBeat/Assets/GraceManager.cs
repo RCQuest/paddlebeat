@@ -36,7 +36,8 @@ public class GraceManager : MonoBehaviour
         tag = "Player";
         graced = true;
         //Debug.Log("grace started.");
-        GetComponent<TrailRenderer>().material.color = deadColor;
+        GetComponent<TrailRenderer>().enabled = false;
+        GetComponent<SpriteRenderer>().enabled = false;
     }
 
     public void endGrace()
@@ -44,7 +45,8 @@ public class GraceManager : MonoBehaviour
         tag = "Ball";
         graceCountdown = graceCountdownLength;
         graced = false;
-        GetComponent<TrailRenderer>().material.color = aliveColor;
+        GetComponent<TrailRenderer>().enabled = true;
+        GetComponent<SpriteRenderer>().enabled = true;
         //Debug.Log("grace end.");
     }
 
