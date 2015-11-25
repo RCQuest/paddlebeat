@@ -9,19 +9,19 @@ public class CentrePaddleAnimation : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        startingPosition = transform.position;
+        //startingPosition = transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        transform.position = Vector3.MoveTowards(transform.position, startingPosition, speed*Time.deltaTime);
+       // transform.position = Vector3.MoveTowards(transform.position, startingPosition, speed*Time.deltaTime);
 
     }
 
     public void startAnimation()
     {
-        transform.position= new Vector3(startingPosition.x, startingPosition.y + positionDistance, 0.0f);
+        //transform.position= new Vector3(startingPosition.x, startingPosition.y + positionDistance, 0.0f);
     }
 }

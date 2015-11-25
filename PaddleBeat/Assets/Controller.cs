@@ -53,24 +53,28 @@ public class Controller : MonoBehaviour //, AudioProcessor.AudioCallbacks
 	// Update is called once per frame
 	void Update ()
     {
-        if (Input.GetKeyDown(KeyCode.X) && currentNodeObject == paddleX)
+        bool x = Input.GetKeyDown(KeyCode.X);
+        bool z = Input.GetKeyDown(KeyCode.Z);
+        bool c = Input.GetKeyDown(KeyCode.C);
+        if (x && currentNodeObject == paddleX)
         {
             paddleX.GetComponent<CentrePaddleAnimation>().startAnimation();
             verifyPress();
         }
-        else if (Input.GetKeyDown(KeyCode.Z) && currentNodeObject == paddleZ)
+        else if (z && currentNodeObject == paddleZ)
         {
             paddleZ.GetComponent<SidePaddleAnimation>().startAnimation();
             verifyPress();
         }
-        else if (Input.GetKeyDown(KeyCode.C) && currentNodeObject == paddleC)
+        else if (c && currentNodeObject == paddleC)
         {
             paddleC.GetComponent<SidePaddleAnimation>().startAnimation();
             verifyPress();
         }
-        else if (Input.GetKeyDown(KeyCode.X)
-             || Input.GetKeyDown(KeyCode.Z)
-             || Input.GetKeyDown(KeyCode.C))
+        else if (!((x && paddleX.GetComponent<Paddle>().isTouchingABrick)
+             || (z && paddleZ.GetComponent<Paddle>().isTouchingABrick)
+             || (c && paddleC.GetComponent<Paddle>().isTouchingABrick))
+             && (x || z || c))
             grace.grace();
     }
 

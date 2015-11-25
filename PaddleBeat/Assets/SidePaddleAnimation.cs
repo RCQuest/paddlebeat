@@ -12,25 +12,25 @@ public class SidePaddleAnimation : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
-        animState = 0f;
-        rotationCentrepoint = rotationCentrepointObject.transform.position;
+        //animState = 0f;
+        //rotationCentrepoint = rotationCentrepointObject.transform.position;
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
-        if (animState > 0)
-        {
-            animState -= Time.deltaTime;
-            transform.RotateAround(rotationCentrepoint, Vector3.forward, isRight ? angle * Time.deltaTime/animFrameDuration : -angle * Time.deltaTime / animFrameDuration);
-        }
-        else animState = 0;
+        //if (animState > 0)
+        //{
+        //    animState -= Time.deltaTime;
+        //    transform.RotateAround(rotationCentrepoint, Vector3.forward, isRight ? angle * Time.deltaTime/animFrameDuration : -angle * Time.deltaTime / animFrameDuration);
+       // }
+        //else animState = 0;
         
     }
 
     public void startAnimation()
     {
-        animState = animFrameDuration;
-        transform.RotateAround(rotationCentrepoint, Vector3.forward, isRight ? -angle : angle);
+        //animState = animFrameDuration;
+        //transform.RotateAround(rotationCentrepoint, Vector3.forward, isRight ? -angle : angle);
     }
 }

@@ -6,37 +6,31 @@ public class Paddle : MonoBehaviour
 {
     public KeyCode paddleKeyCode;
     public PlayerStats playerStats;
-    public int isTouchingABrick=0;
-    public List<Brick> touchingBricks;
+    public bool isTouchingABrick=false;
+    public GraceManager grace;
 
     void OnTriggerStay2D(Collider2D other)
     {
-        if(other.CompareTag("Brick")&&Input.GetKeyDown(paddleKeyCode))
+        if(other.CompareTag("Brick"))
         {
-            other.GetComponent<Brick>().degrade();
-            if (other.GetComponent<Brick>().isBroken())
+            isTouchingABrick = true;
+            if (Input.GetKey(paddleKeyCode)&&!grace.isGraced())
             {
-                isTouchingABrick--;
-                other.GetComponent<Brick>().assertDestruction();
-                
+                other.GetComponent<Brick>().degrade();
+                if (other.GetComponent<Brick>().isBroken())
+                {
+                    
+                    other.GetComponent<Brick>().assertDestruction();
+
+                }
+                Debug.Log(paddleKeyCode + " pressed.");
             }
-            Debug.Log("Got it!");
+        }
+        else
+        {
+            isTouchingABrick = false;
         }
     }
 
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("Brick"))
-        {
-            isTouchingABrick++;
-        }
-    }
 
-    void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.CompareTag("Brick"))
-        {
-            isTouchingABrick--;
-        }
-    }
 }
