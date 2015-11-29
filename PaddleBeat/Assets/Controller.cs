@@ -38,6 +38,8 @@ public class Controller : MonoBehaviour //, AudioProcessor.AudioCallbacks
 
     public float threshold;
 
+    public PlayerStats stats;
+
 
     // Use this for initialization
     void Start ()
@@ -59,17 +61,17 @@ public class Controller : MonoBehaviour //, AudioProcessor.AudioCallbacks
         if (x && currentNodeObject == paddleX)
         {
             paddleX.GetComponent<CentrePaddleAnimation>().startAnimation();
-            verifyPress();
+            verifyPress(paddleX.GetComponent<Paddle>());
         }
         else if (z && currentNodeObject == paddleZ)
         {
             paddleZ.GetComponent<SidePaddleAnimation>().startAnimation();
-            verifyPress();
+            verifyPress(paddleZ.GetComponent<Paddle>());
         }
         else if (c && currentNodeObject == paddleC)
         {
             paddleC.GetComponent<SidePaddleAnimation>().startAnimation();
-            verifyPress();
+            verifyPress(paddleC.GetComponent<Paddle>());
         }
         else if (!((x && paddleX.GetComponent<Paddle>().isTouchingABrick)
              || (z && paddleZ.GetComponent<Paddle>().isTouchingABrick)
@@ -78,10 +80,10 @@ public class Controller : MonoBehaviour //, AudioProcessor.AudioCallbacks
             grace.grace();
     }
 
-    private void verifyPress()
+    private void verifyPress(Paddle paddle)
     {
 
-        if (playerHasHitThisStep || !isOnEntry)
+        if ((playerHasHitThisStep || !isOnEntry) && !paddle.isTouchingABrick)
         {
             grace.grace();
         }
@@ -89,9 +91,13 @@ public class Controller : MonoBehaviour //, AudioProcessor.AudioCallbacks
         {
             distance = Vector3.Distance(ball.gameObject.transform.position, currentNode);
             playerHasHitThisStep = true;
-            if (distance > maxDistance)
+            if (distance > maxDistance && !paddle.isTouchingABrick)
             {
                 grace.grace();
+            }
+            else
+            {
+                stats.incrementScore(Mathf.RoundToInt(1000f*(maxDistance-distance)/maxDistance));
             }
 
             

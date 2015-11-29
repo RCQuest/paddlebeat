@@ -25,7 +25,18 @@ public class Brick : MonoBehaviour {
         {
             degrade();
         }
+        else if (other.CompareTag("Health"))
+        {
+            damagePlayer(other.GetComponent<PlayerStats>());
+        }
             
+    }
+
+    private void damagePlayer(PlayerStats player)
+    {
+        player.depleteLife();
+        //damage animation here
+        Destroy(this.gameObject);
     }
 
     public void degrade()
