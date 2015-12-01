@@ -11,12 +11,15 @@ public class Brick : MonoBehaviour {
     public List<Sprite> breaks;
     private int maxHp;
     public GameObject breakOverlay;
+    private int scoreValue;
+    public GameObject destroyEmitter;
 
     void Start()
     {
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
         sr.sprite = variations[UnityEngine.Random.Range(0, variations.Count)];
         maxHp = brokenStage;
+        scoreValue = maxHp * 1000;
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -53,7 +56,11 @@ public class Brick : MonoBehaviour {
     public void assertDestruction()
     {
         if(brokenStage <= 0)
+        {
+            FindObjectOfType<PlayerStats>().incrementScore(scoreValue);
+            Instantiate(destroyEmitter,this.transform.position,this.transform.localRotation);
             Destroy(this.gameObject);
+        }
     }
 
     void OnTriggerExit2D(Collider2D other)

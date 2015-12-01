@@ -70,11 +70,13 @@
   <ItemGroup>
     <Compile Include="Assets\AudioManager.cs" />
     <Compile Include="Assets\AudioProcessor.cs" />
+    <Compile Include="Assets\AutoDestroy.cs" />
     <Compile Include="Assets\BallMovement.cs" />
     <Compile Include="Assets\Brick.cs" />
     <Compile Include="Assets\BrickGenerator.cs" />
     <Compile Include="Assets\CentrePaddleAnimation.cs" />
     <Compile Include="Assets\Controller.cs" />
+    <Compile Include="Assets\Crosshair.cs" />
     <Compile Include="Assets\Example.cs" />
     <Compile Include="Assets\GameMarshaller.cs" />
     <Compile Include="Assets\GraceManager.cs" />

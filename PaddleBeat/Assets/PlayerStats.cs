@@ -16,7 +16,6 @@ public class PlayerStats : MonoBehaviour
         score = 0;
         scoreText.text = score.ToString();
 
-
     }
 
     public void depleteLife()
