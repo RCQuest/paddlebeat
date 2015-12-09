@@ -28,10 +28,10 @@ public class Brick : MonoBehaviour {
         {
             degrade();
         }
-        else if (other.CompareTag("Health"))
-        {
-            damagePlayer(other.GetComponent<PlayerStats>());
-        }
+        //else if (other.CompareTag("Health"))
+        //{
+        //    damagePlayer(other.GetComponent<PlayerStats>());
+        //}
             
     }
 

@@ -127,12 +127,6 @@ public class Controller : MonoBehaviour //, AudioProcessor.AudioCallbacks
 
     private GameObject getNextNode()
     {
-        if (Input.GetKey(KeyCode.LeftArrow) && Input.GetKey(KeyCode.RightArrow))
-            return nodeC;
-        if (Input.GetKey(KeyCode.LeftArrow))
-            return nodeL;
-        if (Input.GetKey(KeyCode.RightArrow))
-            return nodeR;
         return nodeC;
     }
 
