@@ -8,6 +8,7 @@ using System.Collections;
 
 namespace Rhythmify {
     public abstract class _AbstractRhythmObject : MonoBehaviour {
+        public int rhythmicOffset;
         protected int BPM;
         protected float samplesPerBeat;
         protected float secondsPerBeat;
@@ -44,7 +45,7 @@ namespace Rhythmify {
         }
     
         public void Update() {
-            int beat = (int)((audioSource.timeSamples-sampleoffset) / samplesPerBeat);
+            int beat = (int)((audioSource.timeSamples-sampleoffset+rhythmicOffset) / samplesPerBeat);
 
             if(Input.GetKeyDown(KeyCode.Space)) Debug.Log(audioSource.timeSamples-beat*samplesPerBeat);
         

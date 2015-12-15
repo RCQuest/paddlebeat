@@ -78,6 +78,7 @@
     <Compile Include="Assets\CentrePaddleAnimation.cs" />
     <Compile Include="Assets\Controller.cs" />
     <Compile Include="Assets\Crosshair.cs" />
+    <Compile Include="Assets\DDRArrowProducer.cs" />
     <Compile Include="Assets\Example.cs" />
     <Compile Include="Assets\GameMarshaller.cs" />
     <Compile Include="Assets\GraceManager.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="Assets\PlayerStats.cs" />
     <Compile Include="Assets\ReflectBall.cs" />
     <Compile Include="Assets\RhythmPaddle.cs" />
+    <Compile Include="Assets\RhythmPaddleControl.cs" />
     <Compile Include="Assets\Rhythmify_Scripts\MusicWrapper.cs" />
     <Compile Include="Assets\Rhythmify_Scripts\rhythmObject\ChangeColors.cs" />
     <Compile Include="Assets\Rhythmify_Scripts\rhythmObject\MoveToPositions.cs" />

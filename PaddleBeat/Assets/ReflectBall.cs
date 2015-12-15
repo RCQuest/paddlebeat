@@ -11,7 +11,6 @@ public class ReflectBall : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("got something");
         if (other.CompareTag("Ball"))
         {
             float refraction = 0f;
