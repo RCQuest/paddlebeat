@@ -10,7 +10,6 @@ namespace Rhythmify {
     public class MoveToPositions : _AbstractRhythmObject {
         public Vector3[] positions;
         public int[] indices;
-        public int offset;
         public bool local;
         public bool relative;
         public bool rigid;
@@ -53,7 +52,7 @@ namespace Rhythmify {
                 return;
             }
 
-            idx = beat+ offset;
+            idx = beat;
             if (indices.Length > 0)
             {
                 idxA = indices[idx % indices.Length];

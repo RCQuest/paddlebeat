@@ -8,7 +8,9 @@ using System.Collections;
 
 namespace Rhythmify {
     public abstract class _AbstractRhythmObject : MonoBehaviour {
-        public int rhythmicOffset;
+        public int rhythmicOffsetDenominator;
+        public int rhythmicOffsetNumerator;
+        private int sampleoffset;
         protected int BPM;
         protected float samplesPerBeat;
         protected float secondsPerBeat;
@@ -16,7 +18,6 @@ namespace Rhythmify {
         private AudioClip audioClip;
         private int lastBeatUpdate = -1;
         private int beatCount = 0;
-        private int sampleoffset;
 
         public void Start() {
             GameObject[] bgmContainers = GameObject.FindGameObjectsWithTag("Rhythmify_Music");
@@ -45,11 +46,11 @@ namespace Rhythmify {
         }
     
         public void Update() {
-            int beat = (int)((audioSource.timeSamples-sampleoffset+rhythmicOffset) / samplesPerBeat);
+            int beat = (int)((audioSource.timeSamples-sampleoffset-(samplesPerBeat* rhythmicOffsetNumerator / rhythmicOffsetDenominator)) / samplesPerBeat);
 
             if(Input.GetKeyDown(KeyCode.Space)) Debug.Log(audioSource.timeSamples-beat*samplesPerBeat);
         
-            if (beat != lastBeatUpdate) {
+            if (beat > lastBeatUpdate) {
                 lastBeatUpdate = beat;
                 rhythmUpdate(beatCount++);
             }
